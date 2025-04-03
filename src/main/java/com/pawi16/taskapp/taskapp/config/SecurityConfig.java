@@ -1,6 +1,7 @@
 package com.pawi16.taskapp.taskapp.config;
 
 
+import com.pawi16.taskapp.taskapp.config.filter.TokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -18,6 +20,11 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    private final TokenFilter tokenFilter;
+
+    public SecurityConfig(TokenFilter tokenFilter) {
+        this.tokenFilter = tokenFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -34,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/register", "/users/login").anonymous()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
 

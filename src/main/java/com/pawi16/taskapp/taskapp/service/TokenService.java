@@ -1,9 +1,9 @@
 package com.pawi16.taskapp.taskapp.service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.SignatureGenerationException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pawi16.taskapp.taskapp.entity.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,14 +28,30 @@ public class TokenService {
         calendar.add(Calendar.MINUTE, 60);
         Date expireAt = calendar.getTime();
 
-        String token = JWT.create()
+        return JWT.create()
                 .withIssuer(issuer)
                 .withClaim("principal", user.getId())
                 .withClaim("role", "USER")
                 .withExpiresAt(expireAt)
                 .sign(algorithm);
+    }
 
-        return token;
+    public DecodedJWT verify(String token){
+        DecodedJWT decodedJWT;
+
+        try {
+            Algorithm algorithm = Algorithm();
+            JWTVerifier verifier = JWT.require(algorithm)
+                    // specify any specific claim validations
+                    .withIssuer(issuer)
+                    // reusable verifier instance
+                    .build();
+
+            decodedJWT = verifier.verify(token);
+            return decodedJWT;
+        } catch (JWTVerificationException e) {
+            return null;
+        }
     }
 
     private Algorithm Algorithm() {
