@@ -2,6 +2,8 @@ package com.pawi16.taskapp.taskapp.api;
 
 import com.pawi16.taskapp.taskapp.business.UserBusiness;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
+import com.pawi16.taskapp.taskapp.model.LoginRequest;
+import com.pawi16.taskapp.taskapp.model.LoginResponse;
 import com.pawi16.taskapp.taskapp.model.RegisterRequest;
 import com.pawi16.taskapp.taskapp.model.RegisterResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,16 +22,16 @@ public class UserApi {
     }
 
     @PostMapping("/register")
-    public RegisterResponse register(@RequestBody RegisterRequest request) {
-        //user register service
-        RegisterResponse response = null;
-        try {
-            response = userBusiness.register(request);
-        } catch (BaseException e) {
-            throw new RuntimeException(e);
-        }
+    public RegisterResponse register(@RequestBody RegisterRequest request) throws BaseException {
+        //user register business
 
-        return response;
+        return userBusiness.register(request);
 
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) throws BaseException {
+        //user login business
+        return userBusiness.login(request);
     }
 }
