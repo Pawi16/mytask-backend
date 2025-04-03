@@ -7,6 +7,8 @@ import com.pawi16.taskapp.taskapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -32,6 +34,13 @@ public class UserService {
         userRepository.save(entity);
 
         return entity;
+    }
 
+    public boolean matchPassword(String rawPassword, String encodedPassword){
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }
