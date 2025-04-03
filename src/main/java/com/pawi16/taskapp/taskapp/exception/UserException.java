@@ -30,4 +30,25 @@ public class UserException extends BaseException {
     public static UserException registerLastNameNull() {
         return new UserException("register.lastname.null");
     }
+
+    //login
+    public static UserException loginRequestNull() {
+        return new UserException("login.request.null");
+    }
+
+    public static UserException loginEmailNull() {
+        return new UserException("login.email.null");
+    }
+
+    public static UserException loginPasswordNull() {
+        return new UserException("login.password.null");
+    }
+
+    public static UserException loginUserNotFound() {
+        return new UserException("login.user.not.found");
+    }
+
+    public static UserException loginPasswordNotMatch() {
+        return new UserException("login.password.not.match");
+    }
 }
