@@ -1,9 +1,6 @@
 package com.pawi16.taskapp.taskapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,10 +23,10 @@ public class User extends BaseEntity{
     @Column(nullable = false, length = 120)
     private String password;
 
-    @OneToMany(mappedBy = "createdUser", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Task> createdTask;
+    @OneToMany(mappedBy = "createdUser",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Issue> createdIssue;
 
-    @OneToMany(mappedBy = "assignedUser", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Task> assignedTask;
+    @OneToMany(mappedBy = "createdUser",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Board> createdBoard;
 
 }
