@@ -7,7 +7,6 @@ import com.pawi16.taskapp.taskapp.mapper.UserMapper;
 import com.pawi16.taskapp.taskapp.model.*;
 import com.pawi16.taskapp.taskapp.service.TokenService;
 import com.pawi16.taskapp.taskapp.service.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -59,30 +58,30 @@ public class UserBusiness {
 
     public LoginResponse login(LoginRequest request) throws BaseException {
         //validate
-        if(request == null){
+        if (request == null) {
             //throw request null exception
             throw UserException.loginRequestNull();
         }
 
-        if(request.getEmail() == null){
+        if (request.getEmail() == null) {
             //throw email null exception
             throw UserException.loginEmailNull();
         }
 
-        if(request.getPassword() == null){
+        if (request.getPassword() == null) {
             //throw password null exception
             throw UserException.loginPasswordNull();
         }
 
         //verify
         Optional<User> opt = userService.findByEmail(request.getEmail());
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             //throw user not found exception
             throw UserException.loginUserNotFound();
         }
 
         User user = opt.get();
-        if(!userService.matchPassword(request.getPassword(), user.getPassword())){
+        if (!userService.matchPassword(request.getPassword(), user.getPassword())) {
             //throw password not match exception
             throw UserException.loginPasswordNotMatch();
         }
@@ -100,13 +99,13 @@ public class UserBusiness {
 
     public GetProfileByIdResponse getProfileById(String id) throws BaseException {
         //validate
-        if(id == null || id.trim().isEmpty()){
+        if (id == null || id.trim().isEmpty()) {
             throw UserException.getProfileIdNull();
         }
 
         //verify
         Optional<User> opt = userService.findById(id);
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             throw UserException.getProfileNotFound();
         }
 
@@ -120,7 +119,7 @@ public class UserBusiness {
         Optional<User> opt = userService.findById(currentUserId);
 
         //verify
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             throw UserException.getProfileNotFound();
         }
 
