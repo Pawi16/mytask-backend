@@ -2,14 +2,9 @@ package com.pawi16.taskapp.taskapp.api;
 
 import com.pawi16.taskapp.taskapp.business.UserBusiness;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
-import com.pawi16.taskapp.taskapp.model.LoginRequest;
-import com.pawi16.taskapp.taskapp.model.LoginResponse;
-import com.pawi16.taskapp.taskapp.model.RegisterRequest;
-import com.pawi16.taskapp.taskapp.model.RegisterResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.pawi16.taskapp.taskapp.exception.UserException;
+import com.pawi16.taskapp.taskapp.model.*;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -33,5 +28,11 @@ public class UserApi {
     public LoginResponse login(@RequestBody LoginRequest request) throws BaseException {
         //user login business
         return userBusiness.login(request);
+    }
+
+    @GetMapping("/profile/{id}")
+    public GetProfileByIdResponse getProfileById(@PathVariable("id") String id) throws BaseException {
+        // getProfileById
+        return userBusiness.getProfileById(id);
     }
 }

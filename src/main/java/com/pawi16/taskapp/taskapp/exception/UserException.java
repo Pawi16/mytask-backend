@@ -51,4 +51,14 @@ public class UserException extends BaseException {
     public static UserException loginPasswordNotMatch() {
         return new UserException("login.password.not.match");
     }
+
+    //get profile by id
+    public static UserException getProfileIdNull() {
+        return new UserException("get.profile.id.null");
+    }
+
+    public static UserException getProfileNotFound() {
+        return new UserException("get.profile.not.found");
+    }
+
 }

@@ -21,7 +21,7 @@ public class UserService {
 
     public User createUser(String email, String password, String firstName, String lastName) throws BaseException {
         //verify
-        if (userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             throw UserException.createEmailDuplicated();
         }
 
@@ -36,11 +36,15 @@ public class UserService {
         return entity;
     }
 
-    public boolean matchPassword(String rawPassword, String encodedPassword){
+    public boolean matchPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public Optional<User> findByEmail(String email){
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> findById(String id) {
+        return userRepository.findById(id);
     }
 }

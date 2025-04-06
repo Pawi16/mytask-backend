@@ -4,10 +4,7 @@ import com.pawi16.taskapp.taskapp.entity.User;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.UserException;
 import com.pawi16.taskapp.taskapp.mapper.UserMapper;
-import com.pawi16.taskapp.taskapp.model.LoginRequest;
-import com.pawi16.taskapp.taskapp.model.LoginResponse;
-import com.pawi16.taskapp.taskapp.model.RegisterRequest;
-import com.pawi16.taskapp.taskapp.model.RegisterResponse;
+import com.pawi16.taskapp.taskapp.model.*;
 import com.pawi16.taskapp.taskapp.service.TokenService;
 import com.pawi16.taskapp.taskapp.service.UserService;
 import org.springframework.stereotype.Service;
@@ -98,5 +95,22 @@ public class UserBusiness {
 
         return loginResponse;
 
+    }
+
+    public GetProfileByIdResponse getProfileById(String id) throws BaseException {
+        //validate
+        if(id == null || id.trim().isEmpty()){
+            throw UserException.getProfileIdNull();
+        }
+
+        //verify
+        Optional<User> opt = userService.findById(id);
+        if(opt.isEmpty()){
+            throw UserException.getProfileNotFound();
+        }
+
+        User entity = opt.get();
+
+        return userMapper.userToGetProfileByIdResponse(entity);
     }
 }
