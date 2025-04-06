@@ -115,10 +115,9 @@ public class UserBusiness {
         return userMapper.userToGetProfileByIdResponse(entity);
     }
 
-    public GetMyProfileResponse getMyProfile(Authentication authentication) throws BaseException {
-        String id = (String) authentication.getPrincipal();
+    public GetMyProfileResponse getMyProfile(String currentUserId) throws BaseException {
 
-        Optional<User> opt = userService.findById(id);
+        Optional<User> opt = userService.findById(currentUserId);
 
         //verify
         if(opt.isEmpty()){

@@ -38,7 +38,9 @@ public class UserApi {
 
     @GetMapping("/profile/me")
     public GetMyProfileResponse getMyProfile(Authentication authentication) throws BaseException {
-        // getMyProfile service
-        return userBusiness.getMyProfile(authentication);
+
+        String id = (String) authentication.getPrincipal();
+        // getMyProfile business
+        return userBusiness.getMyProfile(id);
     }
 }
