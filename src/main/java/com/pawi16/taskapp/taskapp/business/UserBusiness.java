@@ -7,6 +7,7 @@ import com.pawi16.taskapp.taskapp.mapper.UserMapper;
 import com.pawi16.taskapp.taskapp.model.*;
 import com.pawi16.taskapp.taskapp.service.TokenService;
 import com.pawi16.taskapp.taskapp.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -113,4 +114,22 @@ public class UserBusiness {
 
         return userMapper.userToGetProfileByIdResponse(entity);
     }
+
+    public GetMyProfileResponse getMyProfile(Authentication authentication) throws BaseException {
+        String id = (String) authentication.getPrincipal();
+
+        Optional<User> opt = userService.findById(id);
+
+        //verify
+        if(opt.isEmpty()){
+            throw UserException.getProfileNotFound();
+        }
+
+        User entity = opt.get();
+
+        return userMapper.userToGetMyProfileResponse(entity);
+
+    }
+
+
 }

@@ -2,8 +2,8 @@ package com.pawi16.taskapp.taskapp.api;
 
 import com.pawi16.taskapp.taskapp.business.UserBusiness;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
-import com.pawi16.taskapp.taskapp.exception.UserException;
 import com.pawi16.taskapp.taskapp.model.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +34,11 @@ public class UserApi {
     public GetProfileByIdResponse getProfileById(@PathVariable("id") String id) throws BaseException {
         // getProfileById
         return userBusiness.getProfileById(id);
+    }
+
+    @GetMapping("/profile/me")
+    public GetMyProfileResponse getMyProfile(Authentication authentication) throws BaseException {
+        // getMyProfile service
+        return userBusiness.getMyProfile(authentication);
     }
 }
