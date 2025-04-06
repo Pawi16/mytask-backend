@@ -4,11 +4,10 @@ import com.pawi16.taskapp.taskapp.business.BoardBusiness;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.model.CreateBoardRequest;
 import com.pawi16.taskapp.taskapp.model.CreateBoardResponse;
+import com.pawi16.taskapp.taskapp.model.EditBoardRequest;
+import com.pawi16.taskapp.taskapp.model.EditBoardResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/boards")
@@ -21,11 +20,17 @@ public class BoardApi {
 
     @PostMapping
     public CreateBoardResponse createBoard(@RequestBody CreateBoardRequest request) throws BaseException {
-        //create board
         // get current user id
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //create board
         CreateBoardResponse response = boardBusiness.createBoard(request, userId);
         return response;
+    }
+
+    @PatchMapping("/{id}")
+    public EditBoardResponse editBoard(@PathVariable("id") String id,@RequestBody EditBoardRequest request) throws BaseException {
+        //edit board business
+        return boardBusiness.editBoard(request, id);
     }
 
 }

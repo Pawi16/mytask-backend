@@ -6,7 +6,6 @@ import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.BoardException;
 import com.pawi16.taskapp.taskapp.repository.BoardRepository;
 import com.pawi16.taskapp.taskapp.repository.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,5 +39,20 @@ public class BoardService {
         boardRepository.save(entity);
 
         return entity;
+    }
+
+    public Board editBoard(String title, String boardId) throws BoardException {
+        //get board
+        Optional<Board> opt = boardRepository.findById(boardId);
+
+        if (opt.isEmpty()) {
+            throw BoardException.editBoardNotFound();
+        }
+
+        Board board = opt.get();
+        board.setTitle(title);
+
+        return boardRepository.save(board);
+
     }
 }
