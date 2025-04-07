@@ -4,20 +4,22 @@ import com.pawi16.taskapp.taskapp.entity.Board;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.BoardException;
 import com.pawi16.taskapp.taskapp.mapper.BoardMapper;
-import com.pawi16.taskapp.taskapp.model.CreateBoardRequest;
-import com.pawi16.taskapp.taskapp.model.CreateBoardResponse;
-import com.pawi16.taskapp.taskapp.model.EditBoardRequest;
-import com.pawi16.taskapp.taskapp.model.EditBoardResponse;
+import com.pawi16.taskapp.taskapp.model.*;
 import com.pawi16.taskapp.taskapp.service.BoardService;
+import com.pawi16.taskapp.taskapp.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BoardBusiness {
+    private final UserService userService;
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
-    public BoardBusiness(BoardService boardService, BoardMapper mapper, BoardMapper boardMapper) {
+    public BoardBusiness(BoardService boardService, BoardMapper mapper, UserService userService, BoardMapper boardMapper) {
         this.boardService = boardService;
+        this.userService = userService;
         this.boardMapper = boardMapper;
     }
 
@@ -61,5 +63,30 @@ public class BoardBusiness {
         EditBoardResponse response = boardMapper.boardToEditBoardResponse(board);
         response.setMessage("edit successfully");
         return response;
+    }
+
+    public List<GetAllBoardsResponse> getAllBoards (String userId) throws BaseException {
+        if(userId == null){
+            //throw getAllUserIdNull
+            throw BoardException.getAllBoardsUserIdNull();
+        }
+        if(userId.trim().isEmpty()){
+            //throw getAllUserIdEmpty
+            throw BoardException.getAllBoardsUserIdEmpty();
+        }
+        if(userService.findById(userId).isEmpty()){
+            //throw getAllUserNotFound
+            throw BoardException.getAllBoardsUserNotFound();
+        }
+
+        List<Board> boards = boardService.findAllByCreatedUserId(userId);
+
+        //map boards to dto
+        List<GetAllBoardsResponse> reponse = boardMapper.boardsToGetAllBoardsResponses(boards);
+        //return dto
+
+        return reponse;
+
+
     }
 }

@@ -8,6 +8,7 @@ import com.pawi16.taskapp.taskapp.repository.BoardRepository;
 import com.pawi16.taskapp.taskapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +55,10 @@ public class BoardService {
 
         return boardRepository.save(board);
 
+    }
+
+    public List<Board> findAllByCreatedUserId(String id) {
+        List<Board> boards = boardRepository.findAllByCreatedUserId(id);
+        return boards;
     }
 }

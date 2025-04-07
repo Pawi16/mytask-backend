@@ -33,4 +33,6 @@ public class BoardApi {
         return boardBusiness.editBoard(request, id);
     }
 
+
+
 }

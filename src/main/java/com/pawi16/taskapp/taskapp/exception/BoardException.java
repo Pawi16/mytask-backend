@@ -32,4 +32,20 @@ public class BoardException extends BaseException{
     public static BoardException editBoardNotFound() {
         return new BoardException("edit.board.not.found");
     }
+
+    //getAllBoard
+
+    public static BoardException getAllBoardsUserIdNull () {
+        return new BoardException("get.all.boards.user.id.null");
+    }
+
+    public static BoardException getAllBoardsUserIdEmpty () {
+        return new BoardException("get.all.boards.user.id.empty");
+    }
+
+    public static BoardException getAllBoardsUserNotFound () {
+        return new BoardException("get.all.boards.user.not.found");
+    }
+
+
 }
