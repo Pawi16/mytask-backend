@@ -11,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true, exclude = {"parentIssue", "childIssues"})
 @ToString(exclude = {"parentIssue", "childIssues"})
 @Data
-@Entity(name = "m_task")
+@Entity(name = "m_issue")
 public class Issue extends BaseEntity {
 
     @Column(nullable = false, length = 120)
