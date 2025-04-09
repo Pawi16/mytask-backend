@@ -1,14 +1,14 @@
 package com.pawi16.taskapp.taskapp.service;
 
-import com.pawi16.taskapp.taskapp.entity.Board;
 import com.pawi16.taskapp.taskapp.entity.User;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.UserException;
 import com.pawi16.taskapp.taskapp.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +48,24 @@ public class UserService {
 
     public Optional<User> findById(String id) {
         return userRepository.findById(id);
+    }
+
+    public User getCurrentUser() throws BaseException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            throw UserException.getCurrentUserUnauthenticated();
+        }
+
+        String userId;
+        try {
+            userId = (String) auth.getPrincipal();
+        } catch (ClassCastException e) {
+            throw UserException.getCurrentUserInvalidPrincipalTypeCast();
+        }
+
+        return userRepository.findById(userId)
+                .orElseThrow(UserException::getCurrentUserUserNotFound);
     }
 
 }
