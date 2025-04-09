@@ -47,5 +47,10 @@ public class BoardException extends BaseException{
         return new BoardException("get.all.boards.user.not.found");
     }
 
+    //get board
+    public static BoardException getBoardNotFound () {
+        return new BoardException("get.board.not.found");
+    }
+
 
 }

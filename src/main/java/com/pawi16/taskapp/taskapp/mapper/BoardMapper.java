@@ -25,5 +25,4 @@ public interface BoardMapper {
     GetAllBoardsResponse boardToGetAllBoardsResponse(Board board);
 
     public List<GetAllBoardsResponse> boardsToGetAllBoardsResponses (List<Board> boards) ;
-
 }

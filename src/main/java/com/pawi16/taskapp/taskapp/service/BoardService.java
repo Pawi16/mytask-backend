@@ -61,4 +61,13 @@ public class BoardService {
         List<Board> boards = boardRepository.findAllByCreatedUserId(id);
         return boards;
     }
+
+    public Board findBoardById(String id) throws BaseException {
+        Optional<Board> opt = boardRepository.findById(id);
+        if (opt.isEmpty()){
+            //throw create.issue.board.not.found
+            throw BoardException.getBoardNotFound();
+        }
+        return opt.get();
+    }
 }
