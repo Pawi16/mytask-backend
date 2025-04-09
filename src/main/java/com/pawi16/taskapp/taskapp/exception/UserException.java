@@ -61,4 +61,15 @@ public class UserException extends BaseException {
         return new UserException("get.profile.not.found");
     }
 
+    //get current uer
+    public static UserException getCurrentUserUnauthenticated() {
+        return new UserException("get.current.user.unauthenticated");
+    }
+    public static UserException getCurrentUserInvalidPrincipalTypeCast() {
+        return new UserException("get.current.user.invalid.principal.type.cast");
+    }
+    public static UserException getCurrentUserUserNotFound() {
+        return new UserException("get.current.user.user.not.found");
+    }
+
 }
