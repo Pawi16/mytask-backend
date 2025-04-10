@@ -20,10 +20,8 @@ public class BoardApi {
 
     @PostMapping
     public CreateBoardResponse createBoard(@RequestBody CreateBoardRequest request) throws BaseException {
-        // get current user id
-        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //create board
-        CreateBoardResponse response = boardBusiness.createBoard(request, userId);
+        CreateBoardResponse response = boardBusiness.createBoard(request);
         return response;
     }
 

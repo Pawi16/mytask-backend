@@ -21,21 +21,13 @@ public class BoardService {
         this.userRepository = userRepository;
     }
 
-    public Board createBoard(String title, String userId) throws BaseException {
+    public Board createBoard(String title, User createdUser) throws BaseException {
 
         Board entity = new Board();
 
-        //get current user
-        Optional<User> opt = userRepository.findById(userId);
-
-        if (opt.isEmpty()) {
-            throw BoardException.createUserNotFound();
-        }
-
-        User currentUser = opt.get();
 
         entity.setTitle(title);
-        entity.setCreatedUser(currentUser);
+        entity.setCreatedUser(createdUser);
 
         boardRepository.save(entity);
 

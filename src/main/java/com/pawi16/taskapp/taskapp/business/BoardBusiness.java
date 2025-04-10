@@ -1,6 +1,7 @@
 package com.pawi16.taskapp.taskapp.business;
 
 import com.pawi16.taskapp.taskapp.entity.Board;
+import com.pawi16.taskapp.taskapp.entity.User;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.BoardException;
 import com.pawi16.taskapp.taskapp.mapper.BoardMapper;
@@ -24,7 +25,7 @@ public class BoardBusiness {
     }
 
 
-    public CreateBoardResponse createBoard(CreateBoardRequest request, String userId) throws BaseException {
+    public CreateBoardResponse createBoard(CreateBoardRequest request) throws BaseException {
         //validate
         if (request == null) {
             throw BoardException.createRequestNull();
@@ -36,7 +37,9 @@ public class BoardBusiness {
             throw BoardException.createTitleEmpty();
         }
 
-        Board board = boardService.createBoard(request.getTitle(), userId);
+        User currentUser = userService.getCurrentUser();
+
+        Board board = boardService.createBoard(request.getTitle(), currentUser);
         CreateBoardResponse response = boardMapper.boardToCreateBoardResponse(board);
         response.setMessage("Create board successfully.");
 
