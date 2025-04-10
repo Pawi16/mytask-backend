@@ -2,6 +2,7 @@ package com.pawi16.taskapp.taskapp.mapper;
 
 import com.pawi16.taskapp.taskapp.entity.Issue;
 import com.pawi16.taskapp.taskapp.model.CreateIssueResponse;
+import com.pawi16.taskapp.taskapp.model.EditIssueByIdResponse;
 import com.pawi16.taskapp.taskapp.model.GetIssueByIdResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +18,9 @@ public interface IssueMapper {
     @Mapping(source = "parentIssue.id", target = "parentIssueId")
     @Mapping(source = "board.id", target = "boardId")
     GetIssueByIdResponse issueToGetIssueByIdResponse (Issue issue);
+
+    @Mapping(source = "parentIssue.id", target = "parentIssueId")
+    @Mapping(source = "board.id", target = "boardId")
+    @Mapping(source = "updatedAt", target = "updatedAt")
+    EditIssueByIdResponse issueToEditIssueByIdResponse (Issue issue);
 }

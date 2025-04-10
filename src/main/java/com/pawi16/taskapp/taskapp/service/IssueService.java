@@ -41,6 +41,34 @@ public class IssueService {
         return entity;
     }
 
+    public Issue editIssue (String issueId, String name, String description, TaskStatus status, LocalDate dueDate, boolean isCompleted, PriorityType priority, Issue parentIssue, Board board) throws BaseException {
+        Issue issue = findIssueById(issueId);
+        if(name != null){
+            issue.setName(name);
+        }
+        if(description != null){
+            issue.setDescription(description);
+        }
+        if(status != null){
+            issue.setStatus(status);
+        }
+        if(dueDate != null){
+            issue.setDueDate(dueDate);
+        }
+        issue.setCompleted(isCompleted);
+        if(priority != null){
+            issue.setPriority(priority);
+        }
+        if(parentIssue != null){
+            issue.setParentIssue(parentIssue);
+        }
+        if(board != null){
+            issue.setBoard(board);
+        }
+
+        issueRepository.save(issue);
+        return issue;
+    }
 
 
 }

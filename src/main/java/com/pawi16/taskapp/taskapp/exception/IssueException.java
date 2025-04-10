@@ -55,6 +55,16 @@ public class IssueException extends BaseException{
         return new IssueException("get.issue.is.empty");
     }
 
+    // editIssueById
+    public static IssueException editIssueIdNull() {
+        return new IssueException("edit.issue.id.null");
+    }
+    public static IssueException editIssueIdEmpty() {
+        return new IssueException("edit.issue.is.empty");
+    }
+    public static IssueException editInvalidIssueType() {
+        return new IssueException("edit.invalid.issue.type");
+    }
 
 
 

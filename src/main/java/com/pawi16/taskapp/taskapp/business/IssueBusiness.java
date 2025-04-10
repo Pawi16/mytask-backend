@@ -4,9 +4,7 @@ import com.pawi16.taskapp.taskapp.entity.*;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
 import com.pawi16.taskapp.taskapp.exception.IssueException;
 import com.pawi16.taskapp.taskapp.mapper.IssueMapper;
-import com.pawi16.taskapp.taskapp.model.CreateIssueRequest;
-import com.pawi16.taskapp.taskapp.model.CreateIssueResponse;
-import com.pawi16.taskapp.taskapp.model.GetIssueByIdResponse;
+import com.pawi16.taskapp.taskapp.model.*;
 import com.pawi16.taskapp.taskapp.service.BoardService;
 import com.pawi16.taskapp.taskapp.service.IssueService;
 import com.pawi16.taskapp.taskapp.service.UserService;
@@ -66,8 +64,8 @@ public class IssueBusiness {
         //validate sub issue
         try {
 
-            childType = IssueType.valueOf(request.getIssueType());
-            priorityType = PriorityType.valueOf(request.getPriority());
+            childType = IssueType.valueOf(request.getIssueType().toUpperCase());
+            priorityType = PriorityType.valueOf(request.getPriority().toUpperCase());
 
             // Validate compatibility using the validator
             issueValidator.validateTypeCompatibility(childType, parentType);
@@ -86,9 +84,11 @@ public class IssueBusiness {
         //validate
         if (issueId == null){
             //throw id null exception
+            throw IssueException.getIssueIdNull();
         }
         if (issueId.trim().isEmpty()){
             //throw id empty exception
+            throw IssueException.getIssueIdEmpty();
         }
 
         //call getIssueById service
@@ -96,5 +96,57 @@ public class IssueBusiness {
 
         //mapper
         return issueMapper.issueToGetIssueByIdResponse(issue);
+    }
+
+    public EditIssueByIdResponse editIssueById(String issueId, EditIssueByIdRequest request) throws BaseException {
+        //validate
+        if (issueId == null){
+            //throw id null exception
+            throw IssueException.editIssueIdNull();
+        }
+        if (issueId.trim().isEmpty()){
+            //throw id empty exception
+            throw IssueException.editIssueIdEmpty();
+        }
+        System.out.print(request.isCompleted());
+
+        //check type compatibility
+        Issue parentIssue = null;
+        if(request.getParentIssueId() != null){
+            parentIssue = issueService.findIssueById(request.getParentIssueId());
+            Issue childIssue = issueService.findIssueById(issueId);
+            issueValidator.validateTypeCompatibility(childIssue.getIssueType(), parentIssue.getIssueType());
+        }
+
+        Board board = null;
+        if(request.getBoardId() != null){
+            board = boardService.findBoardById(request.getBoardId());
+        }
+
+        TaskStatus status = null;
+        PriorityType priorityType = null;
+        if (request.getStatus() != null){
+            try {
+                status = TaskStatus.valueOf(request.getStatus().toUpperCase());
+
+            } catch (IllegalArgumentException e) {
+                throw IssueException.editInvalidIssueType();
+            }
+        }
+        if (request.getPriority() != null){
+            try {
+                priorityType = PriorityType.valueOf(request.getPriority().toUpperCase());
+
+            } catch (IllegalArgumentException e) {
+                throw IssueException.editInvalidIssueType();
+            }
+        }
+
+        //call editIssueById service
+        Issue issue = issueService.editIssue(issueId, request.getName(), request.getDescription(), status, request.getDueDate(), request.isCompleted(), priorityType, parentIssue, board);
+
+        //map
+        return issueMapper.issueToEditIssueByIdResponse(issue);
+
     }
 }
