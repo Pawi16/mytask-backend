@@ -11,6 +11,7 @@ import com.pawi16.taskapp.taskapp.service.UserService;
 import com.pawi16.taskapp.taskapp.service.validator.IssueValidator;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,9 @@ public class IssueBusiness {
         if (request.getName() == null) {
             //throw create.issue.name.null
             throw IssueException.createNameNull();
+        }
+        if (request.getDueDate() == null) {
+            request.setDueDate(LocalDate.now().plusDays(7));
         }
         if (request.getIssueType() == null) {
             //throw create.issue.type.null

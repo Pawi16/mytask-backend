@@ -25,7 +25,7 @@ public class Issue extends BaseEntity {
 
 
 
-    @Column
+    @Column(nullable = false)
     private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
