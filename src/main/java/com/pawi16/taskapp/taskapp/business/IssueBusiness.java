@@ -6,11 +6,14 @@ import com.pawi16.taskapp.taskapp.exception.IssueException;
 import com.pawi16.taskapp.taskapp.mapper.IssueMapper;
 import com.pawi16.taskapp.taskapp.model.CreateIssueRequest;
 import com.pawi16.taskapp.taskapp.model.CreateIssueResponse;
+import com.pawi16.taskapp.taskapp.model.GetIssueByIdResponse;
 import com.pawi16.taskapp.taskapp.service.BoardService;
 import com.pawi16.taskapp.taskapp.service.IssueService;
 import com.pawi16.taskapp.taskapp.service.UserService;
 import com.pawi16.taskapp.taskapp.service.validator.IssueValidator;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class IssueBusiness {
@@ -77,6 +80,21 @@ public class IssueBusiness {
         //call create issue service
         Issue issue = issueService.createIssue(request.getName(), request.getDescription(), request.getDueDate(), childType, priorityType, currentUser, parentIssue, board);
         return issueMapper.issueToCreateIssueResponse(issue);
+    }
 
+    public GetIssueByIdResponse getIssueById(String issueId) throws BaseException {
+        //validate
+        if (issueId == null){
+            //throw id null exception
+        }
+        if (issueId.trim().isEmpty()){
+            //throw id empty exception
+        }
+
+        //call getIssueById service
+        Issue issue = issueService.findIssueById(issueId);
+
+        //mapper
+        return issueMapper.issueToGetIssueByIdResponse(issue);
     }
 }

@@ -27,7 +27,7 @@ public class IssueException extends BaseException{
         return new IssueException("get.issue.not.found");
     }
 
-    //validate issue
+    //validate issue type
     public static IssueException validateTypeParentRequired () {
         return new IssueException("type.parent.required");
     }
@@ -47,7 +47,13 @@ public class IssueException extends BaseException{
         return new IssueException("type.subtask.cannot.have.child");
     }
 
-
+    // getIssueById
+    public static IssueException getIssueIdNull() {
+        return new IssueException("get.issue.id.null");
+    }
+    public static IssueException getIssueIdEmpty() {
+        return new IssueException("get.issue.is.empty");
+    }
 
 
 
