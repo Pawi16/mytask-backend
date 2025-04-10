@@ -47,6 +47,11 @@ public class IssueException extends BaseException{
         return new IssueException("type.subtask.cannot.have.child");
     }
 
+    //validate parent and child board
+    public static IssueException validateParentChildBoardDifferent() {
+        return new IssueException("parent.child.issue.different.board");
+    }
+
     // getIssueById
     public static IssueException getIssueIdNull() {
         return new IssueException("get.issue.id.null");

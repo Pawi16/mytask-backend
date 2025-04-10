@@ -12,6 +12,7 @@ import com.pawi16.taskapp.taskapp.service.validator.IssueValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,6 +79,15 @@ public class IssueBusiness {
             // Handle invalid enum value (e.g., throw a custom exception)
             throw IssueException.createInvalidIssueType();
         }
+
+        //validate parent board and child board
+        if(parentIssue != null){
+            if(!Objects.equals(request.getBoardId(), parentIssue.getBoard().getId())){
+                // throw parent and child need to be in same board exception.
+                throw IssueException.validateParentChildBoardDifferent();
+            }
+        }
+
 
         //call create issue service
         Issue issue = issueService.createIssue(request.getName(), request.getDescription(), request.getDueDate(), childType, priorityType, currentUser, parentIssue, board);
