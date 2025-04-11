@@ -70,5 +70,17 @@ public class IssueService {
         return issue;
     }
 
+    public void updateIssueBoardRecursive (Issue issue, Board newBoard) {
+        issue.setBoard(newBoard);
+        issueRepository.save(issue);
+
+        //recursive
+        if(issue.getChildIssues() != null && !issue.getChildIssues().isEmpty()){
+            for( Issue childIssue : issue.getChildIssues()) {
+                updateIssueBoardRecursive(childIssue, newBoard);
+            }
+        }
+    }
+
 
 }

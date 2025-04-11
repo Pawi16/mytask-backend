@@ -124,19 +124,46 @@ public class IssueBusiness {
         }
         System.out.print(request.isCompleted());
 
-        //check type compatibility
-        Issue parentIssue = null;
+        Issue existingIssue = issueService.findIssueById(issueId);
+        Issue parentIssue = existingIssue.getParentIssue();
+        Board targetBoard = existingIssue.getBoard();
+
+        // parentIssueId != null case
         if(request.getParentIssueId() != null){
-            parentIssue = issueService.findIssueById(request.getParentIssueId());
-            Issue childIssue = issueService.findIssueById(issueId);
-            issueValidator.validateTypeCompatibility(childIssue.getIssueType(), parentIssue.getIssueType());
+            // enforce that EVENT cannot have a parent
+            if (existingIssue.getIssueType() == IssueType.EVENT) {
+                throw IssueException.editEventCannotHaveParent();
+            }
+
+            //check type compatibility
+            Issue newParentIssue = issueService.findIssueById(request.getParentIssueId());
+            issueValidator.validateTypeCompatibility(existingIssue.getIssueType(), parentIssue.getIssueType());
+            parentIssue = newParentIssue;
+
+            //which board to use
+            if (request.getBoardId() == null) {
+                targetBoard = newParentIssue.getBoard();
+            } else if (!Objects.equals(request.getBoardId(), newParentIssue.getBoard().getId())) {
+                throw IssueException.validateParentChildBoardDifferent();
+            } else {
+                targetBoard = boardService.findBoardById(request.getBoardId());
+            }
+        }
+        // direct board change only for event
+        if (request.getBoardId() != null){
+            if (existingIssue.getIssueType() != IssueType.EVENT){
+                throw IssueException.editDirectBoardChangeNotAllowed();
+            }
+            targetBoard = boardService.findBoardById(request.getBoardId());
         }
 
-        Board board = null;
-        if(request.getBoardId() != null){
-            board = boardService.findBoardById(request.getBoardId());
+        //run update if board have a change
+        if(targetBoard != null && !Objects.equals(targetBoard, existingIssue.getBoard())){
+            issueService.updateIssueBoardRecursive(existingIssue, targetBoard);
         }
 
+
+        // prepare other parameter
         TaskStatus status = null;
         PriorityType priorityType = null;
         if (request.getStatus() != null){
@@ -157,7 +184,7 @@ public class IssueBusiness {
         }
 
         //call editIssueById service
-        Issue issue = issueService.editIssue(issueId, request.getName(), request.getDescription(), status, request.getDueDate(), request.isCompleted(), priorityType, parentIssue, board);
+        Issue issue = issueService.editIssue(issueId, request.getName(), request.getDescription(), status, request.getDueDate(), request.isCompleted(), priorityType, parentIssue, targetBoard);
 
         //map
         return issueMapper.issueToEditIssueByIdResponse(issue);

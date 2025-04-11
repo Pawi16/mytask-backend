@@ -70,6 +70,12 @@ public class IssueException extends BaseException{
     public static IssueException editInvalidIssueType() {
         return new IssueException("edit.invalid.issue.type");
     }
+    public static IssueException editDirectBoardChangeNotAllowed() {
+        return new IssueException("edit.direct.board.change.not.allowed");
+    }
+    public static IssueException editEventCannotHaveParent() {
+        return new IssueException("edit.event.cannot.have.parent");
+    }
 
 
 
