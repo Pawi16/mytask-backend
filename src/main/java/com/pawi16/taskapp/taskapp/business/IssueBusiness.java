@@ -196,4 +196,51 @@ public class IssueBusiness {
         return issueMapper.issueToEditIssueByIdResponse(issue);
 
     }
+
+    public MoveIssueToBoardResponse moveIssueToBoard (String issueId, MoveIssueToBoardRequest request) throws BaseException {
+        //validate
+        if (request == null) {
+            throw IssueException.moveRequestNull();
+        }
+
+        // Validate target board ID
+        if (request.getTargetBoardId() == null) {
+            throw IssueException.moveTargetBoardIdNull();
+        }
+        if (request.getTargetBoardId().trim().isEmpty()) {
+            throw IssueException.moveTargetBoardIdEmpty();
+        }
+
+        // Validate issue ID
+        if (issueId == null) {
+            throw IssueException.moveIssueIdNull();
+        }
+        if (issueId.trim().isEmpty()) {
+            throw IssueException.moveIssueIdEmpty();
+        }
+
+        Issue existingIssue = issueService.findIssueById(issueId);
+        //check if it epic type or not f not throw type move not allowed
+        if (existingIssue.getIssueType() != IssueType.EVENT){
+            throw IssueException.editDirectBoardChangeNotAllowed();
+        }
+
+        //find target board
+        Board targetBoard = boardService.findBoardById(request.getTargetBoardId());
+
+        //check if it in the same board
+        if (Objects.equals(existingIssue.getBoard(),targetBoard)){
+            //throw can't move to same board
+            throw IssueException.moveSameBoardNotAllowed();
+        }
+
+        //update issue and child board to be this board
+        issueService.updateIssueBoardRecursive(existingIssue, targetBoard);
+
+        existingIssue = issueService.findIssueById(issueId);
+        //map
+        return issueMapper.issueToMoveIssueToBoardResponse(existingIssue);
+    }
+
+
 }

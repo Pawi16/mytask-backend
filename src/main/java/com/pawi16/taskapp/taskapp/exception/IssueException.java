@@ -77,6 +77,26 @@ public class IssueException extends BaseException{
         return new IssueException("edit.event.cannot.have.parent");
     }
 
+    //moveIssueToBoard
+    public static IssueException moveRequestNull() {
+        return new IssueException("move.request.null");
+    }
+    public static IssueException moveTargetBoardIdNull() {
+        return new IssueException("move.target.board.id.null");
+    }
+    public static IssueException moveTargetBoardIdEmpty() {
+        return new IssueException("move.target.board.id.empty");
+    }
+    public static IssueException moveIssueIdNull() {
+        return new IssueException("move.issue.id.null");
+    }
+    public static IssueException moveIssueIdEmpty() {
+        return new IssueException("move.issue.id.empty");
+    }
+    public static IssueException moveSameBoardNotAllowed() {
+        return new IssueException("move.same.board.not.allowed");
+    }
+
 
 
 }

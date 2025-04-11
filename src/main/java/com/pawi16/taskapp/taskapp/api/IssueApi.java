@@ -28,9 +28,15 @@ public class IssueApi {
     }
 
     @PatchMapping("/{issueId}")
-    public EditIssueByIdResponse editIssueById (@PathVariable("issueId") String issueID, @RequestBody EditIssueByIdRequest request) throws BaseException {
+    public EditIssueByIdResponse editIssueById (@PathVariable("issueId") String issueId, @RequestBody EditIssueByIdRequest request) throws BaseException {
         //editIssueDetail service
-        System.out.println("Received request: " + request);
-        return issueBusiness.editIssueById(issueID,request);
+//        System.out.println("Received request: " + request);
+        return issueBusiness.editIssueById(issueId,request);
+    }
+
+    @PatchMapping("/{issueId}/move")
+    public MoveIssueToBoardResponse moveIssueToBoard (@PathVariable("issueId") String issueId, @RequestBody MoveIssueToBoardRequest request) throws BaseException {
+        //move issue to board service
+        return issueBusiness.moveIssueToBoard(issueId, request);
     }
 }
