@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class IssueBusiness {
@@ -48,13 +47,16 @@ public class IssueBusiness {
             //throw create.issue.type.null
             throw IssueException.createIssueTypeNull();
         }
-        if (request.getBoardId() == null) {
+        if (IssueType.valueOf(request.getIssueType().toUpperCase()) == IssueType.EVENT && request.getBoardId() == null) {
             //throw create.issue.board.id.null
             throw IssueException.createBoardIdNull();
         }
 
         // prepared create argument
-        Board board = boardService.findBoardById(request.getBoardId());
+        Board board = null;
+        if (request.getBoardId() != null){
+            board = boardService.findBoardById(request.getBoardId());
+        }
         User currentUser = userService.getCurrentUser();
         Issue parentIssue = null;
         IssueType parentType = null;
@@ -80,12 +82,16 @@ public class IssueBusiness {
             throw IssueException.createInvalidIssueType();
         }
 
-        //validate parent board and child board
-        if(parentIssue != null){
-            if(!Objects.equals(request.getBoardId(), parentIssue.getBoard().getId())){
+        //validate parent board and child board if both parent issue and board provided
+        if (parentIssue != null && board != null) {
+            if (!Objects.equals(request.getBoardId(), parentIssue.getBoard().getId())) {
                 // throw parent and child need to be in same board exception.
                 throw IssueException.validateParentChildBoardDifferent();
             }
+        }
+        //user parent board if board id not provided
+        else if (parentIssue != null) {
+            board = parentIssue.getBoard();
         }
 
 
@@ -96,11 +102,11 @@ public class IssueBusiness {
 
     public GetIssueByIdResponse getIssueById(String issueId) throws BaseException {
         //validate
-        if (issueId == null){
+        if (issueId == null) {
             //throw id null exception
             throw IssueException.getIssueIdNull();
         }
-        if (issueId.trim().isEmpty()){
+        if (issueId.trim().isEmpty()) {
             //throw id empty exception
             throw IssueException.getIssueIdEmpty();
         }
@@ -114,11 +120,11 @@ public class IssueBusiness {
 
     public EditIssueByIdResponse editIssueById(String issueId, EditIssueByIdRequest request) throws BaseException {
         //validate
-        if (issueId == null){
+        if (issueId == null) {
             //throw id null exception
             throw IssueException.editIssueIdNull();
         }
-        if (issueId.trim().isEmpty()){
+        if (issueId.trim().isEmpty()) {
             //throw id empty exception
             throw IssueException.editIssueIdEmpty();
         }
@@ -129,7 +135,7 @@ public class IssueBusiness {
         Board targetBoard = existingIssue.getBoard();
 
         // parentIssueId != null case
-        if(request.getParentIssueId() != null){
+        if (request.getParentIssueId() != null) {
             // enforce that EVENT cannot have a parent
             if (existingIssue.getIssueType() == IssueType.EVENT) {
                 throw IssueException.editEventCannotHaveParent();
@@ -150,15 +156,15 @@ public class IssueBusiness {
             }
         }
         // direct board change only for event
-        if (request.getBoardId() != null){
-            if (existingIssue.getIssueType() != IssueType.EVENT){
+        if (request.getBoardId() != null) {
+            if (existingIssue.getIssueType() != IssueType.EVENT) {
                 throw IssueException.editDirectBoardChangeNotAllowed();
             }
             targetBoard = boardService.findBoardById(request.getBoardId());
         }
 
         //run update if board have a change
-        if(targetBoard != null && !Objects.equals(targetBoard, existingIssue.getBoard())){
+        if (targetBoard != null && !Objects.equals(targetBoard, existingIssue.getBoard())) {
             issueService.updateIssueBoardRecursive(existingIssue, targetBoard);
         }
 
@@ -166,7 +172,7 @@ public class IssueBusiness {
         // prepare other parameter
         TaskStatus status = null;
         PriorityType priorityType = null;
-        if (request.getStatus() != null){
+        if (request.getStatus() != null) {
             try {
                 status = TaskStatus.valueOf(request.getStatus().toUpperCase());
 
@@ -174,7 +180,7 @@ public class IssueBusiness {
                 throw IssueException.editInvalidIssueType();
             }
         }
-        if (request.getPriority() != null){
+        if (request.getPriority() != null) {
             try {
                 priorityType = PriorityType.valueOf(request.getPriority().toUpperCase());
 
