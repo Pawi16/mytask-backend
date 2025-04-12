@@ -39,4 +39,6 @@ public class IssueApi {
         //move issue to board service
         return issueBusiness.moveIssueToBoard(issueId, request);
     }
+
+
 }

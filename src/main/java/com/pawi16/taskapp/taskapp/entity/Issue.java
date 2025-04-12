@@ -23,7 +23,8 @@ public class Issue extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     @Column(nullable = false)
     private LocalDate dueDate;

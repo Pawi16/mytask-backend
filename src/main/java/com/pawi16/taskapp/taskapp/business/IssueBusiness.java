@@ -64,6 +64,9 @@ public class IssueBusiness {
             parentIssue = issueService.findIssueById(request.getParentIssueId());
             parentType = parentIssue.getIssueType();
         }
+        boolean isDeleted = false;
+        TaskStatus status = TaskStatus.PLANNING;
+        boolean isCompleted = false;
 
         IssueType childType = null;
         PriorityType priorityType = null;
@@ -96,7 +99,7 @@ public class IssueBusiness {
 
 
         //call create issue service
-        Issue issue = issueService.createIssue(request.getName(), request.getDescription(), request.getDueDate(), childType, priorityType, currentUser, parentIssue, board);
+        Issue issue = issueService.createIssue(request.getName(), request.getDescription(), status, isDeleted, request.getDueDate(), childType, isCompleted, priorityType, currentUser, parentIssue, board);
         return issueMapper.issueToCreateIssueResponse(issue);
     }
 

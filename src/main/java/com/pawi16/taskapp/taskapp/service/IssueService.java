@@ -18,21 +18,22 @@ public class IssueService {
     }
 
     public Issue findIssueById (String id) throws BaseException {
-        Optional<Issue> opt = issueRepository.findById(id);
+        Optional<Issue> opt = issueRepository.findByIdAndIsDeletedFalse(id);
         if (opt.isEmpty()){
             throw IssueException.getIssueNotFound();
         }
         return opt.get();
     }
 
-    public Issue createIssue (String name, String description, LocalDate dueDate, IssueType issueType, PriorityType priorityType, User createdUser, Issue parentIssue, Board board) throws BaseException {
+    public Issue createIssue (String name, String description, TaskStatus status, boolean isDeleted, LocalDate dueDate, IssueType issueType, boolean isCompleted, PriorityType priorityType, User createdUser, Issue parentIssue, Board board) throws BaseException {
         Issue entity = new Issue();
         entity.setName(name);
         entity.setDescription(description);
-        entity.setStatus(TaskStatus.PLANNING);
+        entity.setStatus(status);
+        entity.setDeleted(isDeleted);
         entity.setDueDate(dueDate);
         entity.setIssueType(issueType);
-        entity.setCompleted(false);
+        entity.setCompleted(isCompleted);
         entity.setPriority(priorityType);
         entity.setCreatedUser(createdUser);
         entity.setParentIssue(parentIssue);
@@ -70,14 +71,18 @@ public class IssueService {
         return issue;
     }
 
-    public void updateIssueBoardRecursive (Issue issue, Board newBoard) {
+    public void updateIssueBoardRecursive(Issue issue, Board newBoard) {
+        if (issue.isDeleted()) {
+            return;
+        }
         issue.setBoard(newBoard);
         issueRepository.save(issue);
 
-        //recursive
-        if(issue.getChildIssues() != null && !issue.getChildIssues().isEmpty()){
-            for( Issue childIssue : issue.getChildIssues()) {
-                updateIssueBoardRecursive(childIssue, newBoard);
+        if (issue.getChildIssues() != null && !issue.getChildIssues().isEmpty()) {
+            for (Issue childIssue : issue.getChildIssues()) {
+                if (!childIssue.isDeleted()) {
+                    updateIssueBoardRecursive(childIssue, newBoard);
+                }
             }
         }
     }
