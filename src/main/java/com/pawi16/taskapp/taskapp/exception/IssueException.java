@@ -108,6 +108,14 @@ public class IssueException extends BaseException{
         return new IssueException("delete.issue.not.found");
     }
 
+    //get issues
+    public static IssueException getByBoardIdNull() {
+        return new IssueException("get.by.board.id.null");
+    }
+    public static IssueException getByBoardIdEmpty() {
+        return new IssueException("get.by.board.id.empty");
+    }
+
 
 
 }

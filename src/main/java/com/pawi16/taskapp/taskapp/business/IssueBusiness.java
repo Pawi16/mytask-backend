@@ -276,9 +276,11 @@ public class IssueBusiness {
         //validate
         if(boardId == null){
             //throw get.by.board.id.null
+            throw IssueException.getByBoardIdNull();
         }
         if(boardId.trim().isEmpty()){
             //throw get.by.board.id.empty
+            throw IssueException.getByBoardIdEmpty();
         }
 
         //check board exist
