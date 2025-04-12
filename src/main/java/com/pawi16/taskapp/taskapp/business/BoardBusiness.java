@@ -85,8 +85,12 @@ public class BoardBusiness {
 
         List<Board> boards = boardService.findAllByCreatedUserId(userId);
 
+        List<Board> activeBoards = boards.stream()
+                .filter(board -> !board.isDeleted())
+                .toList();
+
         //map boards to dto
-        List<GetAllBoardsResponse> response = boardMapper.boardsToGetAllBoardsResponses(boards);
+        List<GetAllBoardsResponse> response = boardMapper.boardsToGetAllBoardsResponses(activeBoards);
         //return dto
 
         return response;

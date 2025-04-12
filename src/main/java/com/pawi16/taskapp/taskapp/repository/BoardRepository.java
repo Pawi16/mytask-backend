@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, String> {
 
-    List<Board> findAllByCreatedUserId(String id);
+    List<Board> findAllByCreatedUserIdAndIsDeletedFalse(String id);
 
     Optional<Board> findByIdAndIsDeletedFalse(String s);
 }

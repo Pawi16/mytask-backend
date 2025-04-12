@@ -38,15 +38,10 @@ public class BoardService {
         return entity;
     }
 
-    public Board editBoard(String title, String boardId) throws BoardException {
+    public Board editBoard(String title, String boardId) throws BaseException {
         //get board
-        Optional<Board> opt = boardRepository.findById(boardId);
+        Board board = findBoardById(boardId);
 
-        if (opt.isEmpty()) {
-            throw BoardException.editBoardNotFound();
-        }
-
-        Board board = opt.get();
         board.setTitle(title);
 
         return boardRepository.save(board);
@@ -54,7 +49,7 @@ public class BoardService {
     }
 
     public List<Board> findAllByCreatedUserId(String id) {
-        List<Board> boards = boardRepository.findAllByCreatedUserId(id);
+        List<Board> boards = boardRepository.findAllByCreatedUserIdAndIsDeletedFalse(id);
         return boards;
     }
 
