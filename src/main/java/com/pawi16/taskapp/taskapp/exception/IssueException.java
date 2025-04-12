@@ -97,6 +97,17 @@ public class IssueException extends BaseException{
         return new IssueException("move.same.board.not.allowed");
     }
 
+    //deleteIssue
+    public static IssueException deleteIssueIdNull() {
+        return new IssueException("delete.issue.id.null");
+    }
+    public static IssueException deleteIssueIdEmpty() {
+        return new IssueException("delete.issue.id.empty");
+    }
+    public static IssueException deleteIssueNotFound() {
+        return new IssueException("delete.issue.not.found");
+    }
+
 
 
 }

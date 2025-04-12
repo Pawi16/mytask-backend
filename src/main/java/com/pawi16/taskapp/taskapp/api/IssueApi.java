@@ -23,21 +23,27 @@ public class IssueApi {
 
     @GetMapping("/{issueId}")
     public GetIssueByIdResponse getIssueById (@PathVariable("issueId") String issueId) throws BaseException {
-        //getIssueDetail service
+        //getIssueDetail business
         return issueBusiness.getIssueById(issueId);
     }
 
     @PatchMapping("/{issueId}")
     public EditIssueByIdResponse editIssueById (@PathVariable("issueId") String issueId, @RequestBody EditIssueByIdRequest request) throws BaseException {
-        //editIssueDetail service
+        //editIssueDetail business
 //        System.out.println("Received request: " + request);
         return issueBusiness.editIssueById(issueId,request);
     }
 
     @PatchMapping("/{issueId}/move")
     public MoveIssueToBoardResponse moveIssueToBoard (@PathVariable("issueId") String issueId, @RequestBody MoveIssueToBoardRequest request) throws BaseException {
-        //move issue to board service
+        //move issue to board business
         return issueBusiness.moveIssueToBoard(issueId, request);
+    }
+
+    @DeleteMapping("/{issueId}")
+    public DeleteIssueResponse deleteIssueById (@PathVariable("issueId") String issueId) throws BaseException {
+        //delete issue business
+        return issueBusiness.deleteIssueById(issueId);
     }
 
 

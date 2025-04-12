@@ -8,5 +8,5 @@ import java.time.LocalDate;
 public class EditBoardResponse {
     private String title;
     private String message;
-    private LocalDate updateAt;
+    private LocalDate updatedAt;
 }

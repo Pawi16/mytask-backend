@@ -7,6 +7,7 @@ import com.pawi16.taskapp.taskapp.repository.IssueRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,6 +83,19 @@ public class IssueService {
             for (Issue childIssue : issue.getChildIssues()) {
                 if (!childIssue.isDeleted()) {
                     updateIssueBoardRecursive(childIssue, newBoard);
+                }
+            }
+        }
+    }
+
+    public void softDeleteIssueRecursive(Issue issue){
+        issue.setDeleted(true);
+        issueRepository.save(issue);
+
+        if (issue.getChildIssues() != null && !issue.getChildIssues().isEmpty()) {
+            for(Issue childIssue : issue.getChildIssues()) {
+                if (!childIssue.isDeleted()) {
+                    softDeleteIssueRecursive(childIssue);
                 }
             }
         }

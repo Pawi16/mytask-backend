@@ -245,5 +245,29 @@ public class IssueBusiness {
         return issueMapper.issueToMoveIssueToBoardResponse(existingIssue);
     }
 
+    public DeleteIssueResponse deleteIssueById(String issueId) throws BaseException {
+        //validate
+        if(issueId == null){
+            //throw delete.issue.id.null
+            throw IssueException.deleteIssueIdNull();
+        }
+        if(issueId.trim().isEmpty()){
+            //throw delete.issue.id.empty
+            throw IssueException.deleteIssueIdEmpty();
+        }
 
+        Issue issue = issueService.findIssueById(issueId);
+        if(issue == null){
+            //throw delete.issue.not.found
+            throw IssueException.deleteIssueNotFound();
+        }
+
+        //delete
+        issueService.softDeleteIssueRecursive(issue);
+
+        DeleteIssueResponse response = issueMapper.issueToDeleteIssueResponse(issue);
+        response.setMessage("Delete issue successfully");
+
+        return response;
+    }
 }

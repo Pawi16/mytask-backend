@@ -15,6 +15,7 @@ public interface BoardMapper {
     @Mapping(target = "message", ignore = true)
     public CreateBoardResponse boardToCreateBoardResponse (Board board);
 
+    @Mapping(target = "updatedAt", source = "updatedAt")
     @Mapping(target = "message", ignore = true)
     public EditBoardResponse boardToEditBoardResponse (Board board);
 
