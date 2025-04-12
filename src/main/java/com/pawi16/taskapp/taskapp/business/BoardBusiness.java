@@ -38,8 +38,9 @@ public class BoardBusiness {
         }
 
         User currentUser = userService.getCurrentUser();
+        boolean isDeleted = false;
 
-        Board board = boardService.createBoard(request.getTitle(), currentUser);
+        Board board = boardService.createBoard(request.getTitle(),isDeleted, currentUser);
         CreateBoardResponse response = boardMapper.boardToCreateBoardResponse(board);
         response.setMessage("Create board successfully.");
 
@@ -85,11 +86,28 @@ public class BoardBusiness {
         List<Board> boards = boardService.findAllByCreatedUserId(userId);
 
         //map boards to dto
-        List<GetAllBoardsResponse> reponse = boardMapper.boardsToGetAllBoardsResponses(boards);
+        List<GetAllBoardsResponse> response = boardMapper.boardsToGetAllBoardsResponses(boards);
         //return dto
 
-        return reponse;
+        return response;
+    }
 
+    public DeleteBoardResponse deleteBoardById (String boardId) throws BaseException {
+        //validate
+        if (boardId == null){
+            //throw delete.board.id.null
+            throw BoardException.deleteBoardIdNull();
+        }
+        if (boardId.trim().isEmpty()){
+            //throw delete.board.id.empty
+            throw BoardException.deleteBoardIdEmpty();
+        }
+        Board board = boardService.findBoardById(boardId);
+        boardService.softDeleteBoard(board);
 
+        DeleteBoardResponse response = new DeleteBoardResponse();
+        response.setBoardId(boardId);
+        response.setMessage("deleteBoardSuccessfully");
+        return response;
     }
 }

@@ -52,5 +52,13 @@ public class BoardException extends BaseException{
         return new BoardException("get.board.not.found");
     }
 
+    //delete board
+    public static BoardException deleteBoardIdNull () {
+        return new BoardException("delete.board.id.null");
+    }
+    public static BoardException deleteBoardIdEmpty () {
+        return new BoardException("delete.board.id.Empty");
+    }
+
 
 }

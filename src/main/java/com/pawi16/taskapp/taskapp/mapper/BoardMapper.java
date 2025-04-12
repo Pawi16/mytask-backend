@@ -3,6 +3,7 @@ package com.pawi16.taskapp.taskapp.mapper;
 import com.pawi16.taskapp.taskapp.entity.Board;
 import com.pawi16.taskapp.taskapp.entity.Issue;
 import com.pawi16.taskapp.taskapp.model.CreateBoardResponse;
+import com.pawi16.taskapp.taskapp.model.DeleteBoardResponse;
 import com.pawi16.taskapp.taskapp.model.EditBoardResponse;
 import com.pawi16.taskapp.taskapp.model.GetAllBoardsResponse;
 import org.mapstruct.Mapper;
@@ -26,4 +27,5 @@ public interface BoardMapper {
     GetAllBoardsResponse boardToGetAllBoardsResponse(Board board);
 
     public List<GetAllBoardsResponse> boardsToGetAllBoardsResponses (List<Board> boards) ;
+
 }

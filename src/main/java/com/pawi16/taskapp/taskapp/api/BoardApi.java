@@ -38,5 +38,10 @@ public class BoardApi {
         return issueBusiness.getIssuesByBoardId(boardId);
     }
 
+    @DeleteMapping("/{boardId}")
+    public DeleteBoardResponse deleteBoardByBoardId (@PathVariable("boardId") String boardId) throws BaseException {
+        //delete board by board id
+        return boardBusiness.deleteBoardById(boardId);
+    }
 
 }

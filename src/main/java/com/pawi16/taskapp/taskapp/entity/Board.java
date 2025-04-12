@@ -17,6 +17,9 @@ public class Board extends BaseEntity{
     @JoinColumn(name = "m_created_by", nullable = false)
     private User createdUser;
 
+    @Column(nullable = false)
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Issue> issues;
 }
