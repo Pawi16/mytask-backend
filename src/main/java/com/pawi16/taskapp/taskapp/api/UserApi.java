@@ -49,6 +49,11 @@ public class UserApi {
         return userBusiness.getMyProfile(id);
     }
 
+    @PatchMapping("/profile/me")
+    public EditMyProfileResponse editMyProfile(@RequestBody EditMyProfileRequest request) throws BaseException {
+        return userBusiness.editMyProfile(request);
+    }
+
     @GetMapping("/{userId}/boards")
     public List<GetAllBoardsResponse> getAllBoards (@PathVariable("userId") String userId) throws BaseException {
         // getAllBoard business

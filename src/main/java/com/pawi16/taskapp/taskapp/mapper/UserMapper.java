@@ -1,10 +1,7 @@
 package com.pawi16.taskapp.taskapp.mapper;
 
 import com.pawi16.taskapp.taskapp.entity.User;
-import com.pawi16.taskapp.taskapp.model.GetMyProfileResponse;
-import com.pawi16.taskapp.taskapp.model.GetProfileByIdResponse;
-import com.pawi16.taskapp.taskapp.model.LoginResponse;
-import com.pawi16.taskapp.taskapp.model.RegisterResponse;
+import com.pawi16.taskapp.taskapp.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,4 +16,7 @@ public interface UserMapper{
     GetProfileByIdResponse userToGetProfileByIdResponse(User user);
 
     GetMyProfileResponse userToGetMyProfileResponse (User user);
+
+    @Mapping(target = "message", ignore = true)
+    EditMyProfileResponse userToEditMyProfileResponse (User user);
 }

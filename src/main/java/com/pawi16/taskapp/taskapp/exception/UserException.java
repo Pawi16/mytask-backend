@@ -72,4 +72,17 @@ public class UserException extends BaseException {
         return new UserException("get.current.user.user.not.found");
     }
 
+    //edit my profile
+    public static UserException editMyProfileRequestNull() {
+        return new UserException("edit.my.profile.request.null");
+    }
+
+    //edit profile
+    public static UserException editProfileUserIdNull() {
+        return new UserException("edit.profile.user.id.null");
+    }
+    public static UserException editProfileUserNotFound() {
+        return new UserException("edit.profile.user.not.found");
+    }
+
 }

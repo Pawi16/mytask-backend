@@ -129,5 +129,21 @@ public class UserBusiness {
 
     }
 
+    public EditMyProfileResponse editMyProfile (EditMyProfileRequest request) throws BaseException {
+        if(request == null){
+            //throw edit.my.profile.request.null
+            throw UserException.editMyProfileRequestNull();
+        }
+
+        //get current user;
+        User currentUser = userService.getCurrentUser();
+
+        User user = userService.editProfile(currentUser.getId(), request.getFirstName(), request.getLastName());
+
+        EditMyProfileResponse response = userMapper.userToEditMyProfileResponse(user);
+        response.setMessage("Edit profile successfully");
+        return response;
+    }
+
 
 }

@@ -2,10 +2,7 @@ package com.pawi16.taskapp.taskapp.mapper;
 
 import com.pawi16.taskapp.taskapp.entity.Board;
 import com.pawi16.taskapp.taskapp.entity.Issue;
-import com.pawi16.taskapp.taskapp.model.CreateBoardResponse;
-import com.pawi16.taskapp.taskapp.model.DeleteBoardResponse;
-import com.pawi16.taskapp.taskapp.model.EditBoardResponse;
-import com.pawi16.taskapp.taskapp.model.GetAllBoardsResponse;
+import com.pawi16.taskapp.taskapp.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -68,4 +68,26 @@ public class UserService {
                 .orElseThrow(UserException::getCurrentUserUserNotFound);
     }
 
+    public User editProfile(String userId, String firstName, String lastName) throws BaseException {
+        if(userId == null){
+            throw UserException.editProfileUserIdNull();
+        }
+        Optional<User> opt = findById(userId);
+        if(opt.isEmpty()){
+            //throw edit user not file
+            throw UserException.editProfileUserNotFound();
+        }
+        User user = opt.get();
+
+        if(firstName != null){
+            user.setFirstName(firstName);
+        }
+        if(lastName != null){
+            user.setLastName(lastName);
+        }
+
+        userRepository.save(user);
+        return user;
+
+    }
 }
