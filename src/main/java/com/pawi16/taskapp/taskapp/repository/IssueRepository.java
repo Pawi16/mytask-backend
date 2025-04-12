@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IssueRepository extends JpaRepository<Issue,String> {
-    List<Issue> findByBoardIdAndIsDeletedFalse(String boardId);
+    List<Issue> findByBoardIdAndParentIssueIsNullAndIsDeletedFalse(String boardId);
 
     Optional<Issue> findByIdAndIsDeletedFalse(String s);
+
+
 }

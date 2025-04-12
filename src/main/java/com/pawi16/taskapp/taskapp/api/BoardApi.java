@@ -1,21 +1,22 @@
 package com.pawi16.taskapp.taskapp.api;
 
 import com.pawi16.taskapp.taskapp.business.BoardBusiness;
+import com.pawi16.taskapp.taskapp.business.IssueBusiness;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
-import com.pawi16.taskapp.taskapp.model.CreateBoardRequest;
-import com.pawi16.taskapp.taskapp.model.CreateBoardResponse;
-import com.pawi16.taskapp.taskapp.model.EditBoardRequest;
-import com.pawi16.taskapp.taskapp.model.EditBoardResponse;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.pawi16.taskapp.taskapp.model.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/boards")
 public class BoardApi {
     private final BoardBusiness boardBusiness;
+    private final IssueBusiness issueBusiness;
 
-    public BoardApi(BoardBusiness boardBusiness) {
+    public BoardApi(BoardBusiness boardBusiness, IssueBusiness issueBusiness) {
         this.boardBusiness = boardBusiness;
+        this.issueBusiness = issueBusiness;
     }
 
     @PostMapping
@@ -31,6 +32,11 @@ public class BoardApi {
         return boardBusiness.editBoard(request, id);
     }
 
+    @GetMapping("/{boardId}/issues")
+    public List<GetIssuesByBoardIdResponse> getIssuesByBoardId (@PathVariable("boardId") String boardId) throws BaseException {
+        //get Issues by board id
+        return issueBusiness.getIssuesByBoardId(boardId);
+    }
 
 
 }

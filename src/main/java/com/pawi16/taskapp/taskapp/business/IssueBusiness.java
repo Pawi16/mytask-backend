@@ -12,6 +12,7 @@ import com.pawi16.taskapp.taskapp.service.validator.IssueValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -269,5 +270,23 @@ public class IssueBusiness {
         response.setMessage("Delete issue successfully");
 
         return response;
+    }
+
+    public List<GetIssuesByBoardIdResponse> getIssuesByBoardId (String boardId) throws BaseException {
+        //validate
+        if(boardId == null){
+            //throw get.by.board.id.null
+        }
+        if(boardId.trim().isEmpty()){
+            //throw get.by.board.id.empty
+        }
+
+        //check board exist
+        boardService.findBoardById(boardId);
+
+        //get issue by board id
+        List<Issue> issues = issueService.getIssuesByBoardId(boardId);
+        return issueMapper.issuesToGetIssuesByBoardIdResponse(issues);
+
     }
 }

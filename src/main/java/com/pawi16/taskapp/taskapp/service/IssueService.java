@@ -2,6 +2,7 @@ package com.pawi16.taskapp.taskapp.service;
 
 import com.pawi16.taskapp.taskapp.entity.*;
 import com.pawi16.taskapp.taskapp.exception.BaseException;
+import com.pawi16.taskapp.taskapp.exception.BoardException;
 import com.pawi16.taskapp.taskapp.exception.IssueException;
 import com.pawi16.taskapp.taskapp.repository.IssueRepository;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,10 @@ public class IssueService {
                 }
             }
         }
+    }
+
+    public List<Issue> getIssuesByBoardId(String boardId){
+        return issueRepository.findByBoardIdAndParentIssueIsNullAndIsDeletedFalse(boardId);
     }
 
 
